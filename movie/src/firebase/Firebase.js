@@ -22,6 +22,7 @@ const analytics = getAnalytics(app);
 // Firestore Initialization
 export const db = getFirestore(app);
 export const movieref = collection(db, "movies");
+export const reviewsRef = collection(db, "reviews");
 
 // Firebase Auth (If Needed)
 export const auth = getAuth(app);

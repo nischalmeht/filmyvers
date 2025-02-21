@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { TailSpin } from "react-loader-spinner";
 import { addDoc } from "firebase/firestore";
 import { movieref } from "../firebase/Firebase";
+import Swal from 'sweetalert2'
+// const Swal = require('sweetalert2')
 // import swal from 'sweetalert';  // For SweetAlert version 1
 
 const AddMovie = () => {
@@ -14,24 +16,30 @@ const AddMovie = () => {
     const [loading, setloading] = useState(false);
     const addMovie= async()=>{
       setloading(false)
-      await addDoc(movieref,form);
-      // swal({
-      //   title: "Successfully Added",
-
-      // })
-      // swal({
-      //   title: "Successfully Added",
-      //   icon: "success",
-      //   buttons: false,
-      //   timer: 3000
-      // })
-      // setForm({
-      //   title: "",
-      //   year: "",
-      //   description: "",
-      //   image: ""
-      // })
-
+      try{
+        await addDoc(movieref,form);
+        Swal.fire({
+          title: "Successfully Added",
+          icon: "success",
+          buttons: false,
+          timer: 3000
+        })
+        setform({
+          title: "",
+          year: "",
+          description: "",
+          image: ""
+        })
+      }catch(err){
+        swal({
+          title: err,
+          icon: "error",
+          buttons: false,
+          timer: 3000
+        })
+      }
+      
+      setloading(false)
     }
     
   return (
@@ -104,7 +112,7 @@ const AddMovie = () => {
               </div>
             </div>
             <div className="p-2 w-full">
-              <button  className="flex mx-auto text-white bg-green-600 border-0 py-2 px-8 focus:outline-none hover:bg-green-700 rounded text-lg">
+              <button  onClick={addMovie} className="flex mx-auto text-white bg-green-600 border-0 py-2 px-8 focus:outline-none hover:bg-green-700 rounded text-lg">
                 {loading ? <TailSpin height={25} color="white" /> : 'Submit'}
                 {/* Submit */}
               </button>
